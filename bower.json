@@ -1,0 +1,24 @@
+{
+  "name": "y",
+  "description": "drywall",
+  "main": "",
+  "authors": [
+    "josedematos <jose@swogo.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/josedeMatos/drywall",
+  "moduleType": [
+    "es6"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
