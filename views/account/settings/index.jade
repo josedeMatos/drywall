@@ -83,7 +83,9 @@ block body
           button.close(type='button', data-dismiss='alert') &times;
           | Changes have been saved.
         |<% } %>
-      div.form-group(class!='<%- errfor.first ? "has-error" : "" %>')
+      div.form-group(class!='<%- errfor.company?"has-error":"" %>')
+        h3 Company Name: <%- company %>
+      div.form-group(class!='<%- company %>')
         label First Name:
         input.form-control(type='text', name='first', value!='<%- first %>')
         span.help-block <%- errfor.first %>
@@ -95,10 +97,6 @@ block body
         label Last Name:
         input.form-control(type='text', name='last', value!='<%- last %>')
         span.help-block <%- errfor['last'] %>
-      div.form-group(class!='<%- errfor.company ? "has-error" : "" %>')
-        label Company Name:
-        input.form-control(type='text', name='company', value!='<%- company %>')
-        span.help-block <%- errfor.company %>
       div.form-group(class!='<%- errfor.phone ? "has-error" : "" %>')
         label Phone:
         input.form-control(type='text', name='phone', value!='<%- phone %>')
