@@ -78,7 +78,8 @@
 				accs: this.accList,
 				checkPresence:function(idx){
 					console.log('checkPresence');
-					return this.model.owners[this.accs[idx]._id]?'checked':'';
+					console.log(this.model.owners[this.accs[idx]._id]?'checked':'');
+					return this.model.owners[this.accs[idx]._id]?'checked':undefined;
 				},
 				testsave:function(idx){
 					return this.model.permissions.read["testinsave"]?'checked':'';

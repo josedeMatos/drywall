@@ -43,11 +43,11 @@ block body
 							tbody
 								td owner
 								|<% _.each(accs, function(ele,idx) { %>
-								<% checkPresence(0);console.log(this) %>
+								<% var check=checkPresence(idx);console.log(check) %>
 								td
-									input(type="checkbox", accId!="<%= idx %>" checked=!"<%= checkPresence(idx) %>")
+									input(type="checkbox", accId!="<%= idx %>","<%= checkPresence(idx)? 'checked' : undefined%>")
 								td
-									input(type="checkbox", accId!="<%= idx %>" checked=!"<%= testsave(idx) %>")
+									input(type="checkbox", accId!="<%= idx %>", checked=!"<%= testsave(idx) %>")
 								|<% }); %>
 
 
