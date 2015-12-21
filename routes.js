@@ -135,6 +135,12 @@ exports = module.exports = function(app, passport) {
   app.put('/admin/categories/:id/', require('./views/admin/categories/index').update);
   app.delete('/admin/categories/:id/', require('./views/admin/categories/index').delete);
 
+  app.get('/admin/sites/', require('./views/admin/sites/index').findAll);
+  app.put('/admin/sites/:id', require('./views/admin/sites/index').find);
+  app.put('/admin/sites/:id', require('./views/admin/sites/index').update);
+
+  
+
   //admin > search
   app.get('/admin/search/', require('./views/admin/search/index').find);
 
@@ -170,6 +176,10 @@ exports = module.exports = function(app, passport) {
   app.get('/account/settings/tumblr/', passport.authenticate('tumblr', { callbackURL: '/account/settings/tumblr/callback/' }));
   app.get('/account/settings/tumblr/callback/', require('./views/account/settings/index').connectTumblr);
   app.get('/account/settings/tumblr/disconnect/', require('./views/account/settings/index').disconnectTumblr);
+
+  //account > sites
+  app.get('/account/sites/', require('./views/account/sites/index').find);
+  
 
   //route not found
   app.all('*', require('./views/http/index').http404);

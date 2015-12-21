@@ -34,6 +34,7 @@
       name: ''
     },
     url: function() {
+      console.log('on details url');
       return '/admin/categories/'+ app.mainView.model.id +'/';
     },
     parse: function(response) {
@@ -73,6 +74,7 @@
       this.render();
     },
     syncUp: function() {
+      console.log('on backbone syncup');
       this.model.set({
         _id: app.mainView.model.id,
         pivot: app.mainView.model.get('pivot'),
@@ -80,6 +82,7 @@
       });
     },
     render: function() {
+      console.log('on backbone render');
       this.$el.html(this.template( this.model.attributes ));
 
       for (var key in this.model.attributes) {
@@ -89,6 +92,7 @@
       }
     },
     update: function() {
+      console.log('on backbone update');
       this.model.save({
         pivot: this.$el.find('[name="pivot"]').val(),
         name: this.$el.find('[name="name"]').val()

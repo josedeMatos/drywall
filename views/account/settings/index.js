@@ -246,6 +246,7 @@ exports.disconnectTumblr = function(req, res, next){
 };
 
 exports.update = function(req, res, next){
+      console.log(JSON.stringify(req.body));
   var workflow = req.app.utility.workflow(req, res);
 
   workflow.on('validate', function() {

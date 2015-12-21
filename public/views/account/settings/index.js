@@ -117,7 +117,7 @@
         first: this.$el.find('[name="first"]').val(),
         middle: this.$el.find('[name="middle"]').val(),
         last: this.$el.find('[name="last"]').val(),
-        //company: this.$el.find('[name="company"]').val(),
+        company: this.$el.find('[name="company"]').val(),
         phone: this.$el.find('[name="phone"]').val(),
         zip: this.$el.find('[name="zip"]').val()
       });

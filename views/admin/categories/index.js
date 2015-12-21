@@ -39,6 +39,7 @@ exports.find = function(req, res, next){
 };
 
 exports.read = function(req, res, next){
+  console.log('express read');
   req.app.db.models.Category.findById(req.params.id).exec(function(err, category) {
     if (err) {
       return next(err);
@@ -54,6 +55,7 @@ exports.read = function(req, res, next){
 };
 
 exports.create = function(req, res, next){
+  console.log('express create');
   var workflow = req.app.utility.workflow(req, res);
 
   workflow.on('validate', function() {
@@ -111,6 +113,7 @@ exports.create = function(req, res, next){
 };
 
 exports.update = function(req, res, next){
+  console.log('on update express');
   var workflow = req.app.utility.workflow(req, res);
 
   workflow.on('validate', function() {

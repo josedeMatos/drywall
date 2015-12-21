@@ -1,0 +1,55 @@
+extends ../../../layouts/account
+
+block head
+	title Sites
+
+block feet
+	script(src='/views/admin/sites/index.min.js?#{cacheBreaker}')
+
+block body
+	div.row
+		div.col-xs-12
+			div.page-header
+				h1 Sites
+				div.row
+					dive#sites-grids
+					div#site-list
+					script(type='text/template', id='tmpl-site-list')
+						table.table.table-striped
+							thead
+								tr
+									th
+									th pivot
+									th.stretch name
+									th path
+							tbody#results-rows
+								
+					script(type='text/template', id='tmpl-results-rows')
+						|<% _.each(sites, function(site) { %>
+						td
+							input.btn.btn-default.btn-sm.btn-details(type='button', value='Edit', id!="<%= site._id %>")
+						td
+						td <%= site.name %>
+						td <%= site.path %>
+						|<% }); %>
+					script(type='text/template', id='tmpl-grid')
+						table.table.table-striped
+							thead
+								tr
+									|<% _.each(accs, function(acc) { %>
+									th
+									th.stretch <%= acc.name.first %>
+									|<% }); %>		
+							tbody
+								td owner
+								|<% _.each(accs, function(ele,idx) { %>
+								<% checkPresence(0);console.log(this) %>
+								td
+									input(type="checkbox", accId!="<%= idx %>" checked=!"<%= checkPresence(idx) %>")
+								td
+									input(type="checkbox", accId!="<%= idx %>" checked=!"<%= testsave(idx) %>")
+								|<% }); %>
+
+
+	script(type='text/template', id='data-siteList') !{data.siteList}
+	script(type='text/template', id='data-accountList') !{data.accountList}
