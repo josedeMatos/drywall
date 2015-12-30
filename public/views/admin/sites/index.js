@@ -69,6 +69,8 @@
 		},
 		initialize: function(options) {
 			this.accList = options.accList;
+			//this.listenTo(app.mainView.account, 'change', this.syncUp);
+      this.listenTo(this.model, 'sync', this.render);
 		},
 		render: function() {
 			console.log('onrender')

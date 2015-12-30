@@ -86,6 +86,7 @@
       'click .btn-update': 'update'
     },
     initialize: function() {
+      console.log('initialize');
       this.model = new app.Details();
       this.syncUp();
       this.listenTo(app.mainView.account, 'change', this.syncUp);
@@ -93,6 +94,7 @@
       this.render();
     },
     syncUp: function() {
+      console.log('syncUp');
       this.model.set({
         _id: app.mainView.account.id,
         first: app.mainView.account.get('name').first,
@@ -104,6 +106,7 @@
       });
     },
     render: function() {
+      console.log('render');
       this.$el.html(this.template( this.model.attributes ));
 
       for (var key in this.model.attributes) {
@@ -117,7 +120,7 @@
         first: this.$el.find('[name="first"]').val(),
         middle: this.$el.find('[name="middle"]').val(),
         last: this.$el.find('[name="last"]').val(),
-        company: this.$el.find('[name="company"]').val(),
+        //company: this.$el.find('[name="company"]').val(),
         phone: this.$el.find('[name="phone"]').val(),
         zip: this.$el.find('[name="zip"]').val()
       });

@@ -53,6 +53,7 @@ var renderSettings = function(req, res, next, oauthMessage) {
 };
 
 exports.init = function(req, res, next){
+  console.log('init')
   renderSettings(req, res, next, '');
 };
 

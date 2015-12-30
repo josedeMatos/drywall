@@ -3,7 +3,7 @@
 exports = module.exports = function(app, mongoose) {
   var siteSchema = new mongoose.Schema({
     _id: {
-      type: String
+      type: mongoose.Schema.Types.ObjectId
     },
     name: {
       type: String,

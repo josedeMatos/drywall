@@ -136,7 +136,7 @@ exports = module.exports = function(app, passport) {
   app.delete('/admin/categories/:id/', require('./views/admin/categories/index').delete);
 
   app.get('/admin/sites/', require('./views/admin/sites/index').findAll);
-  app.put('/admin/sites/:id', require('./views/admin/sites/index').find);
+  app.get('/admin/sites/:id', require('./views/admin/sites/index').find);
   app.put('/admin/sites/:id', require('./views/admin/sites/index').update);
 
   
