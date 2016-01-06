@@ -137,7 +137,9 @@ exports = module.exports = function(app, passport) {
 
   app.get('/admin/sites/', require('./views/admin/sites/index').findAll);
   app.get('/admin/sites/:id', require('./views/admin/sites/index').find);
+  app.post('/admin/sites/', require('./views/admin/sites/index').create);
   app.put('/admin/sites/:id', require('./views/admin/sites/index').update);
+  app.patch('/admin/sites/:id', require('./views/admin/sites/index').update);
 
   
 

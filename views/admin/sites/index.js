@@ -2,6 +2,28 @@
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
+exports.create = function(req, res, next) {
+	var workflow = req.app.utility.workflow(req, res);
+
+	workflow.on('createSite', function() {
+
+		var fieldsToSet = {
+			name: req.body.name
+			};
+
+		req.app.db.models.Site.create(fieldsToSet, function(err, account) {
+			if (err) {
+				return workflow.emit('exception', err);
+			}
+
+			workflow.outcome.site = account;
+			return workflow.emit('response');
+		});
+	});
+
+	workflow.emit('createSite');
+}
+
 exports.findAll = function(req, res, next) {
 
 	//lean sets returned sites as plain js objects insteads of instanceof mongoose.Document
@@ -27,7 +49,15 @@ exports.find = function(req, res, next) {
 		console.log(err);
 		console.log('site');
 		console.log(site);
-		res.send(site);
+
+		//res.send(site);
+
+		res.render('admin/sites/details', {
+			data: {
+				site: escape(JSON.stringify(site)),
+			}
+		});
+
 	});
 };
 
@@ -36,14 +66,15 @@ exports.update = function(req, res, next) {
 	console.log(JSON.stringify(req.body))
 
 	var workflow = req.app.utility.workflow(req, res);
-
+	/*
 	var fieldsToSet = {
 		permissions: req.body.permissions
-	};
+	};*/
+
+	var fieldsToSet = req.body;
 
 	workflow.on('findByIdAndUpdate', function(err) {
 		req.app.db.models.Site.findByIdAndUpdate(new ObjectId(req.params.id), fieldsToSet, function(err, site) {
-			console.log('on findByIdAndUpdate');
 			return workflow.emit('exception', err);
 			console.log(err);
 			if (err) {
@@ -53,6 +84,7 @@ exports.update = function(req, res, next) {
 			workflow.outcome.site = site;
 			return workflow.emit('response');
 		});
+
 	});
 	workflow.emit('findByIdAndUpdate');
 };

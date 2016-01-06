@@ -1,4 +1,4 @@
-extends ../../../layouts/account
+extends ../../../layouts/admin
 
 block head
 	title Sites
@@ -9,11 +9,19 @@ block feet
 block body
 	div.row
 		div.col-xs-12
-			div.page-header
-				h1 Sites
-				div.row
-					dive#sites-grids
-					div#site-list
+			div#header
+			div.row
+				div#sites-grids
+				div#site-list
+
+
+					script(type='text/template', id='tmpl-site-header')
+						div.page-header
+							form.form-inline.pull-right
+								div.input-group
+									input.form-control(name='name', type='text', placeholder='enter a name')
+									button.btn.btn-primary.btn-add(type='button') Add New
+							h1 Sites
 					script(type='text/template', id='tmpl-site-list')
 						table.table.table-striped
 							thead
@@ -33,22 +41,45 @@ block body
 						td <%= site.path %>
 						|<% }); %>
 					script(type='text/template', id='tmpl-grid')
+						h2 <%= model.name %>
 						table.table.table-striped
 							thead
 								tr
-									|<% _.each(accs, function(acc) { %>
 									th
+									|<% _.each(accs, function(acc) { %>
 									th.stretch <%= acc.name.first %>
 									|<% }); %>		
 							tbody
 								td owner
 								|<% _.each(accs, function(ele,idx) { %>
-								<% var check=checkPresence(idx);console.log(check) %>
 								td
 									input(type="checkbox", accId!="<%= idx %>","<%= checkPresence(idx)? 'checked' : undefined%>")
-								td
-									input(type="checkbox", accId!="<%= idx %>", checked=!"<%= testsave(idx) %>")
 								|<% }); %>
+						input.btn.btn-default.btn-sm.btn-details(type='button', value='Edit', id!="<%= model._id %>")
+
+					script(type='text/template', id='tmpl-grid-scnd')
+						h2 <%= model.name %>
+						table.table.table-striped
+							thead
+								tr
+									th
+									th Owner
+									|<% _.each(permitKeys, function(key) { %>
+									th.stretch <%= key %>
+									|<% }); %>		
+							tbody
+								|<% _.each(accs, function(ele,idx) { %>
+								tr
+									td <%= ele.name.first %>
+									td
+										input(type="checkbox", accId!="<%= ele._id %>","<%= checkPresence(ele._id)? 'checked' : undefined%>")
+									|<% _.each(permitKeys, function(k,idx,list) { %>
+									td
+										input(type="checkbox", accId!="<%= ele._id %>",permitKey!="<%= k %>","<%= checkPresence(ele._id,k,idx)? 'checked' : undefined%>")
+									|<% },ele); %>
+								|<% }); %>
+						input.btn.btn-default.btn-sm.btn-details(type='button', value='Edit', id!="<%= model._id %>")
+						
 
 
 	script(type='text/template', id='data-siteList') !{data.siteList}
