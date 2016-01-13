@@ -58,6 +58,14 @@ app.use(passport.session());
 app.use(csrf({ cookie: { signed: true } }));
 helmet(app);
 
+//CORS permissions
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 //response locals
 app.use(function(req, res, next) {
   res.cookie('_csrfToken', req.csrfToken());

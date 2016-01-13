@@ -18,16 +18,17 @@ block body
 							thead
 								tr
 									th
-									th pivot
 									th.stretch name
 									th path
 							tbody#results-rows
 								|<% _.each(sites, function(site) { %>
-								td
-									input.btn.btn-default.btn-sm.btn-details(type='button', value='Edit', id!="<%= site._id %>")
-								td
-								td <%= site.name %>
-								td <%= site.path %>
+								tr
+									td
+										input.btn.btn-default.btn-sm.btn-details(type='button', value='Edit', id!="<%= site._id %>")
+									td <%= site.name %>
+									td 
+										a(href!="<%= site.path %>")
+											<%= site.path %> 
 								|<% }); %>
 
 

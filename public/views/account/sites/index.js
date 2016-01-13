@@ -5,14 +5,23 @@
 
 	app = app || {};
 
+	app.AccessToken = Backbone.Model.extend({
+    idAttribute: '_id',
+    defaults: {
+      token: '',
+      createdAt: new Date()
+    },
+    url: '/account/token/'
+  });
+
 	app.ListView = Backbone.View.extend({
 		el: '#site-list',
 		template: _.template($('#tmpl-site-list').html()),
 		events: {
-			'click .btn-details': 'Viewsite'
+			'click .btn-details': 'Viewsite',
+			'click a': 'GotoSite',
 		},
 		initialize: function() {
-			console.log(unescape($('#data-siteList').html()));
 			this.$el.html(this.template({
 				sites: JSON.parse(unescape($('#data-siteList').html()))
 			}));
@@ -20,6 +29,17 @@
 		Viewsite: function(e) {
 			console.log($(e.currentTarget).attr('id'));
 			location.href = $(e.currentTarget).attr('id');
+		},
+		GotoSite: function(e) {
+			e.preventDefault();
+			var token=new app.AccessToken();
+			this.listenTo(token, 'sync', this.jumpToPath);
+			token.set('path',$(e.currentTarget).attr('href'));
+			token.save();
+		},
+		jumpToPath:function(obj){
+			if(obj.get('status'))
+				location.href=obj.get('token').path;
 		}
 	});
 

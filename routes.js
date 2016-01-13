@@ -140,6 +140,7 @@ exports = module.exports = function(app, passport) {
   app.post('/admin/sites/', require('./views/admin/sites/index').create);
   app.put('/admin/sites/:id', require('./views/admin/sites/index').update);
   app.patch('/admin/sites/:id', require('./views/admin/sites/index').update);
+  app.delete('/admin/sites/:id', require('./views/admin/sites/index').delete);
 
   
 
@@ -181,7 +182,13 @@ exports = module.exports = function(app, passport) {
 
   //account > sites
   app.get('/account/sites/', require('./views/account/sites/index').find);
-  
+  app.get('/account/sites/:id', require('./views/account/sites/index').read);
+  app.patch('/account/sites/:id', require('./views/account/sites/index').update);
+
+  //tokens
+//  app.get('/account/token/', require('./util/mSiteAccess/index').find);
+  app.post('/account/token/', require('./util/mSiteAccess/index').createOrFind);
+  app.get('/token/', require('./util/mSiteAccess/index').createOrFind);
 
   //route not found
   app.all('*', require('./views/http/index').http404);

@@ -20,26 +20,13 @@
 			name: ''
 		},
 		url: function() {
-			return '/admin/sites/' + this.id + '/';
+			return '/account/sites/' + this.id + '/';
 		}
 	});
 
 	app.Account = Backbone.Model.extend({
 		idAttribute: '_id',
-		defaults: {
-			success: false,
-			errors: [],
-			errfor: {},
-			first: '',
-			middle: '',
-			last: '',
-			company: '',
-			phone: '',
-			zip: ''
-		},
-		url: function() {
-			return '/admin/accounts/' + this.id + '/';
-		}
+		url: '/account/settings/'
 	});
 
 	app.HeaderView = Backbone.View.extend({
@@ -69,7 +56,6 @@
 			this.render();
 		},
 		syncUp: function() {
-			console.log("--DEBUG@syncup");
 			this.model.set({
 				_id: app.mainView.model.id,
 				name: app.mainView.model.get('name'),
@@ -77,8 +63,7 @@
 			});
 		},
 		render: function() {
-			console.log("--DEBUG@render");
-
+			console.log(JSON.stringify(this.model.attributes))
 			this.$el.html(this.template(this.model.attributes));
 
 			for (var key in this.model.attributes) {
@@ -88,12 +73,14 @@
 			}
 		},
 		update: function() {
-			this.model.save({
-				name: this.$el.find('[name="name"]').val(),
-				path: this.$el.find('[name="path"]').val()
-			}, {
-				patch: true
-			});
+
+				this.model.save({
+					name: this.$el.find('[name="name"]').val(),
+					path: this.$el.find('[name="path"]').val()
+				}, {
+					patch: true
+				});
+			
 		}
 	});
 	app.MainView = Backbone.View.extend({
@@ -102,13 +89,7 @@
 		initialize: function() {
 			app.mainView = this;
 			this.model = new app.Site(JSON.parse(unescape($('#data-site').html())));
-			//console.log(JSON.stringify(this.model.get('owners')[0]));
-			//ar owners=this.model.attributes.permissions.read;
-			//console.log(Object.keys(this.model.attributes.permissions.read[0]));
-
-			//var cenas=new app.Account(_id:{Object.keys(this.model.attributes.permissions.read)[0]});
-			//console.log(cenas);
-
+			this.account = new app.Account(JSON.parse(unescape($('#data-account').html())));
 			app.detailsView = new app.DetailsView();
 			app.headerView = new app.HeaderView();
 		}

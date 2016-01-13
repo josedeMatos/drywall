@@ -1,0 +1,50 @@
+extends ../../../layouts/account
+
+block head
+	title Sites
+
+block feet
+	script(src='/views/account/sites/details.min.js?#{cacheBreaker}')
+
+block body
+	div.row
+		div.col-xs-12
+			div#header
+		div.col-xs-12
+			div#details
+
+
+
+	script(type='text/template', id='tmpl-header')
+		div.page-header
+			h1
+				a(href='/account/sites/') Sites
+				|  / <%- name %>
+
+	script(type='text/template', id='tmpl-details')
+		fieldset
+			legend Contact Info
+			div.alerts
+				|<% _.each(errors, function(err) { %>
+				div.alert.alert-danger.alert-dismissable
+					button.close(type='button', data-dismiss='alert') &times;
+					|<%- err %>
+			<% }); %>
+			|<% if (success) { %>
+			div.alert.alert-info.alert-dismissable
+				button.close(type='button', data-dismiss='alert') &times;
+				| Changes have been saved.
+			|<% } %>
+			div.form-group(class!='<%- errfor.name ? "has-error" : "" %>')
+				label Name:
+				input.form-control(type='text', name='name', value!='<%- name %>')
+				span.help-block <%- errfor.name %>
+			div.form-group(class!='<%- errfor.path ? "has-error" : "" %>')
+				label Path:
+				input.form-control(type='text', name='path', value!='<%- path %>')
+				span.help-block <%- errfor.path %>
+			div.form-group
+				button.btn.btn-primary.btn-update(type='button') Update
+
+	script(type='text/template', id='data-site') !{data.site}
+	script(type='text/template', id='data-account') !{data.account}

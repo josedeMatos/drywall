@@ -3,6 +3,9 @@ extends ../../../layouts/admin
 block head
 	title Sites
 
+block neck
+	link(rel='stylesheet', href='/views/admin/sites/index.min.css?#{cacheBreaker}')
+
 block feet
 	script(src='/views/admin/sites/index.min.js?#{cacheBreaker}')
 
@@ -62,24 +65,24 @@ block body
 						table.table.table-striped
 							thead
 								tr
-									th
+									th Account
 									th Owner
 									|<% _.each(permitKeys, function(key) { %>
-									th.stretch <%= key %>
+									th <%= key %>
 									|<% }); %>		
 							tbody
 								|<% _.each(accs, function(ele,idx) { %>
 								tr
 									td <%= ele.name.first %>
 									td
-										input(type="checkbox", accId!="<%= ele._id %>","<%= checkPresence(ele._id)? 'checked' : undefined%>")
+										input(type="checkbox", data-accId!="<%= ele._id %>","<%= checkPresence(ele._id)? 'checked' : undefined%>")
 									|<% _.each(permitKeys, function(k,idx,list) { %>
 									td
-										input(type="checkbox", accId!="<%= ele._id %>",permitKey!="<%= k %>","<%= checkPresence(ele._id,k,idx)? 'checked' : undefined%>")
+										input(type="checkbox", data-accId!="<%= ele._id %>",data-permitKey!="<%= k %>","<%= checkPresence(ele._id,k,idx)? 'checked' : undefined%>")
 									|<% },ele); %>
 								|<% }); %>
 						input.btn.btn-default.btn-sm.btn-details(type='button', value='Edit', id!="<%= model._id %>")
-						
+						input.btn.btn-default.btn-sm.btn-erase(type='button', value='Delete', id!="<%= model._id %>")
 
 
 	script(type='text/template', id='data-siteList') !{data.siteList}

@@ -21,7 +21,7 @@
 			name: ''
 		},
 		url: function() {
-			return '/admin/sites/' + (this.isNew() ? '' : this.id +'/');
+			return '/admin/sites/' + (this.isNew() ? '' : this.id + '/');
 		}
 	});
 	app.SiteCollection = Backbone.Collection.extend({
@@ -108,111 +108,20 @@
 		}
 	});
 
-	app.oldGridView = Backbone.View.extend({
-		accList: {},
-		template: _.template($('#tmpl-grid').html()),
-		events: {
-			'click input[type=checkbox]': 'permissionChange',
-			'click .btn-details': 'viewDetails'
-		},
-		viewDetails: function() {
-			location.href = this.model.url();
-		},
-		initialize: function(options) {
-			this.accList = options.accList;
-			//this.listenTo(app.mainView.account, 'change', this.syncUp);
-			this.listenTo(this.model, 'sync', this.render);
-		},
-		render: function() {
-			console.log('onrender')
-			console.log(this.model.attributes.permissions);
-			this.$el.html(this.template({
-				model: this.model.attributes,
-				accs: this.accList,
-				checkPresence: function(idx) {
-					console.log('checkPresence');
-					console.log(this.model.owners[this.accs[idx]._id] ? 'checked' : '');
-					return this.model.owners[this.accs[idx]._id] ? 'checked' : undefined;
-				}
-			}));
-			return this;
-		},
-		permissionChange: function(e) {
-			var model = this.model.attributes;
-			var accIDX = $(e.currentTarget).attr('accid');
-			var accID = this.accList[accIDX]._id;
-			var insert = (e.currentTarget.checked);
-			var permissionToEditKey = $(e.currentTarget).attr('permitKey');
-			var changes = {};
-			var keys = Object.keys(model.permissions);
-			var keysLength = keys.length;
-
-			if (permissionToEditKey) {
-				changes.permissions = $.extend(true, {}, model.permissions);
-
-				if (insert)
-					changes.permissions[permissionToEditKey][accID] = {};
-				else
-					changes.permissions[permissionToEditKey][accID] = undefined;
-
-			} else {
-				changes.owners = $.extend(true, {}, model.owners);
-				if (insert)
-					changes.owners[accID] = {};
-				else
-					changes.owners[accID] = undefined;
-			}
-			/*
-						for (var i = 0; i < keysLength; i++) {
-							changes.permissions[keys[i]] = {};
-
-							var permissionKeys = Object.keys(model.permissions[keys[i]]);
-							var permissionKeysLength = permissionKeys.length;
-
-							if (permissionKeysLength > 0) {
-								for (var f = 0; f < permissionKeysLength; f++) {
-									changes.permissions[keys[i]][permissionKeysLength[f]] = {};
-								}
-								if (insert)
-									changes.permissions[keys[i]][accID] = {};
-								else
-									changes.permissions[keys[i]][accID] = undefined;
-							} else {
-								if (insert)
-									changes.permissions[keys[i]][accID] = {};
-							}
-						}*/
-
-			console.log('JSON.stringify(changes)');
-			console.log(JSON.stringify(changes));
-			this.model.save(changes, {
-				patch: true
-			});
-			/*
-						this.model.save({
-							permissions: {
-								read: {
-									accID: "test"
-								}
-							}
-						});*/
-
-		}
-	});
-
 	app.GridResultsView = Backbone.View.extend({
 		accList: {},
 		template: _.template($('#tmpl-grid-scnd').html()),
 		events: {
 			'click input[type=checkbox]': 'permissionChange',
-			'click .btn-details': 'viewDetails'
+			'click .btn-details': 'viewDetails',
+			'click .btn-erase': 'remove'
 		},
 		viewDetails: function() {
 			location.href = this.model.url();
 		},
 		initialize: function(options) {
 			this.accList = options.accList;
-			//this.listenTo(app.mainView.account, 'change', this.syncUp);
+			//this.listenTo(this.model, 'change', this.syncUp);
 			this.listenTo(this.model, 'sync', this.render);
 		},
 		render: function() {
@@ -221,8 +130,6 @@
 				accs: this.accList,
 				permitKeys: Object.keys(this.model.attributes.permissions),
 				checkPresence: function(id, key, list) {
-					console.log('list');
-					console.log(list);
 					var arrToCheck = key ? this.model.permissions[key] : this.model.owners;
 					return arrToCheck[id] ? 'checked' : undefined;
 				}
@@ -231,47 +138,38 @@
 		},
 		permissionChange: function(e) {
 			var model = this.model.attributes;
-			var accID = $(e.currentTarget).attr('accid');
+			var accID = $(e.currentTarget).data('accid');
 			var insert = (e.currentTarget.checked);
-			var permissionToEditKey = $(e.currentTarget).attr('permitKey');
+			var permissionToEditKey = $(e.currentTarget).data('permitkey');
 			var changes = {};
-			var keys = Object.keys(model.permissions);
-			var keysLength = keys.length;
 
-			console.log(permissionToEditKey);
-			console.log(keys);
-			//			keysLength["errr"].throwcenas;
-
-			if (permissionToEditKey) {
+			if(permissionToEditKey)
 				changes.permissions = $.extend(true, {}, model.permissions);
-
-				if (insert)
-					changes.permissions[permissionToEditKey][accID] = {};
-				else
-					changes.permissions[permissionToEditKey][accID] = undefined;
-
-			} else {
+			else
 				changes.owners = $.extend(true, {}, model.owners);
-				if (insert)
-					changes.owners[accID] = {};
-				else
-					changes.owners[accID] = undefined;
-			}
 
-			console.log('JSON.stringify(changes)');
-			console.log(JSON.stringify(changes));
+			var tgt=permissionToEditKey?changes.permissions[permissionToEditKey]:changes.owners;
+
+			if (insert)
+					tgt[accID] = {};
+				else
+					tgt[accID] = undefined;
+
 			this.model.save(changes, {
 				patch: true
 			});
-			/*
-						this.model.save({
-							permissions: {
-								read: {
-									accID: "test"
-								}
-							}
-						});*/
-
+		},
+		remove: function() {
+			this.model.destroy({
+				success: function(model, response) {
+					if (response.success)
+					location.href = '/admin/sites/';
+					else
+					 {
+						alert(response.errors.join('\n'));
+					}
+				}
+			});
 		}
 	});
 
@@ -314,7 +212,6 @@
 
 				frag.appendChild(view.render().el);
 			}, this);
-			console.log('appending');
 			$('#sites-grids').append(frag);
 		}
 	});
@@ -323,7 +220,6 @@
 
 		el: '.page .container',
 		initialize: function() {
-			console.log('initialize');
 			app.mainView = this;
 
 
@@ -337,29 +233,6 @@
 				accArr = [];
 			app.headerView = new app.HeaderView();
 			app.gridView = new app.GridView();
-			/*
-						sitesParsed.forEach(function(element) {
-							sitesArr.push(new app.Site(element));
-						});
-						accParsed.forEach(function(element, index, array) {
-							accArr.push(new app.Account(element));
-						});
-
-						this.siteCollection = new app.SiteCollection(sitesArr);
-						this.accCollection = new app.AccountCollection(accArr);
-
-						var frag = document.createDocumentFragment();
-						this.siteCollection.each(function(site) {
-
-							var view = new app.GridView2({
-								model: site,
-								accList: accParsed
-							});
-
-							frag.appendChild(view.render().el);
-						}, this);
-						$('#sites-grids').append(frag);*/
-
 
 		}
 	});
