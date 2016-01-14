@@ -59,16 +59,20 @@ app.use(csrf({ cookie: { signed: true } }));
 helmet(app);
 
 //CORS permissions
+/*
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
+*/
 
 //response locals
 app.use(function(req, res, next) {
-  res.cookie('_csrfToken', req.csrfToken());
+  var cookietemp=req.csrfToken();
+  console.log("--DEBUG@ cookie crsf"+cookietemp);
+  res.cookie('_csrfToken', cookietemp);
   res.locals.user = {};
   res.locals.user.defaultReturnUrl = req.user && req.user.defaultReturnUrl();
   res.locals.user.username = req.user && req.user.username;
