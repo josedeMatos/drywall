@@ -185,10 +185,8 @@ exports = module.exports = function(app, passport) {
   app.get('/account/sites/:id', require('./views/account/sites/index').read);
   app.patch('/account/sites/:id', require('./views/account/sites/index').update);
 
-  //tokens
-//  app.get('/account/token/', require('./util/mSiteAccess/index').find);
-  app.post('/account/token/', require('./util/mSiteAccess/index').createOrFind);
-  app.get('/token/', require('./util/mSiteAccess/index').createOrFind);
+  //validate access to subsites
+  app.get('/validateAccess/', require('./util/mSiteAccess/index').validateAccess);
 
   //route not found
   app.all('*', require('./views/http/index').http404);

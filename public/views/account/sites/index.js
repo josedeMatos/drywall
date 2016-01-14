@@ -5,13 +5,17 @@
 
 	app = app || {};
 
-	app.AccessToken = Backbone.Model.extend({
+	app.AccessMS = Backbone.Model.extend({
     idAttribute: '_id',
     defaults: {
-      token: '',
-      createdAt: new Date()
+      status: false,
+      path:''
     },
-    url: '/account/token/'
+    url: function() {
+    	console.log("--DEBUG@ url");
+    	console.log(this);
+			return '/validateAccess?path='+this.get('path');
+		} 
   });
 
 	app.ListView = Backbone.View.extend({
@@ -32,14 +36,14 @@
 		},
 		GotoSite: function(e) {
 			e.preventDefault();
-			var token=new app.AccessToken();
-			this.listenTo(token, 'sync', this.jumpToPath);
-			token.set('path',$(e.currentTarget).attr('href'));
-			token.save();
+			var access=new app.AccessMS();
+			this.listenTo(access, 'sync', this.jumpToPath);
+			access.set('path',$(e.currentTarget).attr('href'));
+			access.fetch();
 		},
 		jumpToPath:function(obj){
 			if(obj.get('status'))
-				location.href=obj.get('token').path;
+				location.href=obj.get('path');
 		}
 	});
 
