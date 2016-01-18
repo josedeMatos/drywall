@@ -4,8 +4,10 @@ var ObjectId = require('mongoose').Types.ObjectId;
 exports.find = function(req, res, next) {
 
 	var owners = "owners." + req.user.roles.account._id;
+	var test={["owners." + req.user.roles.account._id]:"stuff"}
+	console.log("--DEBUG@ at find on account"+test);
 	var siteList = req.app.db.models.Site.find({
-		owners: {
+		[owners]: {
 			'$exists': true
 		}
 	}, function(err, doc) {

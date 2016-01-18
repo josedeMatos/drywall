@@ -29,7 +29,7 @@ app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', function () {
   //and... we have a data store
 });
-
+mongoose.set('debug', true);
 //config data models
 require('./models')(app, mongoose);
 
