@@ -12,7 +12,8 @@ var config = require('./config'),
     passport = require('passport'),
     mongoose = require('mongoose'),
     helmet = require('helmet'),
-    csrf = require('csurf');
+    csrf = require('csurf'),
+    httpProxy = require('http-proxy');
 
 //create express app
 var app = express();
@@ -22,6 +23,14 @@ app.config = config;
 
 //setup the web server
 app.server = http.createServer(app);
+
+//proxy
+app.proxyserver =httpProxy.createProxyServer();
+//app.proxyserver =httpProxy.createProxyServer({target:'http://localhost:3000'}).listen(8000);
+app.proxyserver.on('error', function(e) {
+  console.log("--DEBUG@ proxy error "+e);
+});
+//app.proxyserver = httpProxy.createProxyServer();
 
 //setup mongoose
 app.db = mongoose.createConnection(config.mongodb.uri);
@@ -58,7 +67,7 @@ app.use(passport.session());
 app.use(csrf({ cookie: { signed: true } }));
 helmet(app);
 
-//CORS permissions
+//CORS permissions/
 /*
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
