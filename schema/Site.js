@@ -13,6 +13,10 @@ exports = module.exports = function(app, mongoose) {
       type: String,
       default: ''
     },
+    _location: {
+      type: String,
+      default: ''
+    },
     owners: {},
     permissions: {
       read: {},

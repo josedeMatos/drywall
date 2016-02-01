@@ -123,6 +123,7 @@ exports = module.exports = function(app, passport) {
   });
 
   passport.deserializeUser(function(id, done) {
+    console.log("--DEBUG@ deserializeUser");
     app.db.models.User.findOne({ _id: id }).populate('roles.admin').populate('roles.account').exec(function(err, user) {
       if (user && user.roles && user.roles.admin) {
         user.roles.admin.populate("groups", function(err, admin) {

@@ -44,6 +44,8 @@ exports.find = function(req, res, next) {
 
 	req.app.db.models.Site.findById(new ObjectId(req.params.id)).lean().exec(function(err, site) {
 		console.log(JSON.stringify(site));
+		console.log("--DEBUG@ render find");
+		console.log(JSON.stringify(site));
 		res.render('admin/sites/details', {
 			data: {
 				site: escape(JSON.stringify(site)),
@@ -54,7 +56,7 @@ exports.find = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-
+/*
 	var workflow = req.app.utility.workflow(req, res);
 
 	var fieldsToSet = req.body;
@@ -71,7 +73,7 @@ exports.update = function(req, res, next) {
 		});
 
 	});
-	workflow.emit('findByIdAndUpdate');
+	workflow.emit('findByIdAndUpdate');*/
 };
 
 exports.delete = function(req, res, next){

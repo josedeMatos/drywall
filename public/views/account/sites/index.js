@@ -35,11 +35,12 @@
 			location.href = $(e.currentTarget).attr('id');
 		},
 		GotoSite: function(e) {
+			/*
 			e.preventDefault();
 			var access=new app.AccessMS();
 			this.listenTo(access, 'sync', this.jumpToPath);
 			access.set('path',$(e.currentTarget).attr('href'));
-			access.fetch();
+			access.fetch();*/
 		},
 		jumpToPath:function(obj){
 			if(obj.get('status'))

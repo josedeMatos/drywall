@@ -11,6 +11,7 @@ var pusherror = function(err, workflow) {
 exports.proxyGet = function(req, res, next) {
 	//var workflow = req.app.utility.workflow(req, res);
 	var target=req.params.site;
+	console.log("--DEBUG@ proxy "+target);
 	req.url='/';
 	req.app.proxyserver.web(req, res,{
       target: 'http://localhost:9090'

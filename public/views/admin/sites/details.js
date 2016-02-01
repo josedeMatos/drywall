@@ -17,7 +17,8 @@
 				write: {}
 			},
 			path: '',
-			name: ''
+			name: '',
+			_location:''
 		},
 		url: function() {
 			return '/admin/sites/' + this.id + '/';
@@ -73,7 +74,8 @@
 			this.model.set({
 				_id: app.mainView.model.id,
 				name: app.mainView.model.get('name'),
-				path: app.mainView.model.get('path')
+				path: app.mainView.model.get('path'),
+				_location: app.mainView.model.get('_location')
 			});
 		},
 		render: function() {
@@ -82,7 +84,9 @@
 			this.$el.html(this.template(this.model.attributes));
 
 			for (var key in this.model.attributes) {
+				
 				if (this.model.attributes.hasOwnProperty(key)) {
+					console.log("--DEBUG@ keys render "+key+" value of key "+this.model.attributes[key]);
 					this.$el.find('[name="' + key + '"]').val(this.model.attributes[key]);
 				}
 			}
@@ -90,7 +94,8 @@
 		update: function() {
 			this.model.save({
 				name: this.$el.find('[name="name"]').val(),
-				path: this.$el.find('[name="path"]').val()
+				path: this.$el.find('[name="path"]').val(),
+				_location: this.$el.find('[name="_location"]').val()
 			}, {
 				patch: true
 			});
@@ -101,6 +106,8 @@
 		el: '.page .container',
 		initialize: function() {
 			app.mainView = this;
+			console.log("--DEBUG@ unescaping");
+			console.log(unescape($('#data-site').html()));
 			this.model = new app.Site(JSON.parse(unescape($('#data-site').html())));
 			//console.log(JSON.stringify(this.model.get('owners')[0]));
 			//ar owners=this.model.attributes.permissions.read;

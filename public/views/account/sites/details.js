@@ -17,7 +17,8 @@
 				write: {}
 			},
 			path: '',
-			name: ''
+			name: '',
+			_location:''
 		},
 		url: function() {
 			return '/account/sites/' + this.id + '/';
@@ -75,8 +76,7 @@
 		update: function() {
 
 				this.model.save({
-					name: this.$el.find('[name="name"]').val(),
-					path: this.$el.find('[name="path"]').val()
+					name: this.$el.find('[name="name"]').val()
 				}, {
 					patch: true
 				});

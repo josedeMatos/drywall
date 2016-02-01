@@ -41,8 +41,12 @@ block body
 				span.help-block <%- errfor.name %>
 			div.form-group(class!='<%- errfor.path ? "has-error" : "" %>')
 				label Path:
-				input.form-control(type='text', name='path', value!='<%- path %>')
+				input.form-control(type='text', name='path', value!='<%- path %>',disabled=true)
 				span.help-block <%- errfor.path %>
+			div.form-group(class!='<%- errfor._location ? "has-error" : "" %>')
+				label Location:
+				input.form-control(type='text', name='_location', value!='<%- _location %>', disabled=true)
+				span.help-block <%- errfor._location %>
 			div.form-group
 				button.btn.btn-primary.btn-update(type='button') Update
 

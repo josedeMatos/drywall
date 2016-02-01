@@ -17,17 +17,16 @@ block body
 						table.table.table-striped
 							thead
 								tr
-									th
-									th.stretch name
-									th path
+									th Name
+									th Location
+									th Path
 							tbody#results-rows
 								|<% _.each(sites, function(site) { %>
 								tr
-									td
-										input.btn.btn-default.btn-sm.btn-details(type='button', value='Edit', id!="<%= site._id %>")
 									td <%= site.name %>
+									td <%= site._location %>
 									td 
-										a(href!="<%= site.path %>")
+										a(href!="<%= '/api/'+site.path %>")
 											<%= site.path %> 
 								|<% }); %>
 

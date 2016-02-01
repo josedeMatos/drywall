@@ -1,9 +1,11 @@
 'use strict';
 
 function ensureAuthenticated(req, res, next) {
+  console.log("--DEBUG@ ensureAuthenticated"+req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
   }
+
   res.set('X-Auth-Required', 'true');
   req.session.returnUrl = req.originalUrl;
   res.redirect('/login/');
@@ -166,8 +168,6 @@ exports = module.exports = function(app, passport) {
   app.put('/admin/sites/:id', require('./views/admin/sites/index').update);
   app.patch('/admin/sites/:id', require('./views/admin/sites/index').update);
   app.delete('/admin/sites/:id', require('./views/admin/sites/index').delete);
-
-
 
   //admin > search
   app.get('/admin/search/', require('./views/admin/search/index').find);

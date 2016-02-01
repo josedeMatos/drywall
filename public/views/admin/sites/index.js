@@ -18,7 +18,8 @@
 				write: {}
 			},
 			path: '',
-			name: ''
+			name: '',
+			_location:''
 		},
 		url: function() {
 			return '/admin/sites/' + (this.isNew() ? '' : this.id + '/');

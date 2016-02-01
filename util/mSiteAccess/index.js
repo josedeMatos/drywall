@@ -2,7 +2,7 @@
 var ObjectId = require('mongoose').Types.ObjectId;
 
 var pusherror = function(err, workflow) {
-
+	console.log("--DEBUG@ error"+err);
 	workflow.outcome.errors.push(err);
 	workflow.outcome.status = false;
 	return workflow.emit('response');
@@ -10,10 +10,10 @@ var pusherror = function(err, workflow) {
 
 exports.validateAccess = function(req, res, next) {
 	var workflow = req.app.utility.workflow(req, res);
-	var path = req.query.path || req.headers.origin;
+	var path = req.query.path || req.headers.origin||req.headers.path;
 	var accntID = undefined;
-
 	workflow.on('checkUsersValidity', function() {
+		console.log("--DEBUG@ checkUsersValidity");
 		var rexp = new RegExp("((http|https)\:\/\/||www)" + path + "(\/\S*)?");
 		req.app.db.models.Site.find({
 			path: {

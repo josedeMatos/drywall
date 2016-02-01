@@ -85,6 +85,7 @@ exports.login = function(req, res){
   });
 
   workflow.on('attemptLogin', function() {
+    console.log("--DEBUG@ attemptLogin");
     req._passport.instance.authenticate('local', function(err, user, info) {
       if (err) {
         return workflow.emit('exception', err);
